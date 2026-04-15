@@ -4,10 +4,21 @@ services:
     container_name: flask-blog
     ports:
       - "5000:5000"
-    volumes:
-      - ./:/app
-      - ./data:/app/data
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app.py
+      - DATABASE_URL=postgresql://blog:blogpass@db:5432/blog
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    container_name: blog-postgres
+    environment:
+      - POSTGRES_USER=blog
+      - POSTGRES_PASSWORD=blogpass
+      - POSTGRES_DB=blog
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
