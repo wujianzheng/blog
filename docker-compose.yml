@@ -1,0 +1,12 @@
+services:
+  blog:
+    build: .
+    container_name: flask-blog
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app.py
+    restart: unless-stopped
